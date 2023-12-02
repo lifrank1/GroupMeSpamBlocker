@@ -9,7 +9,8 @@ import json
 API_ROOT = 'https://api.groupme.com/v3/'
 FLAGGED_PHRASES = (
     'my child has cancer',
-    'removemetest'
+    'removemetest',
+    'insert phrases you want removed here'
 )
 
 
@@ -45,7 +46,8 @@ def kick_user(group_id, user_id, token):
 def receive(event, context):
     message = json.loads(event['body'])
 
-    bot_id = message['bot_id']
+    message['token'] = 'YOUR_TOKEN_HERE'
+    bot_id = 'YOUR_BOT_ID_HERE'
     for phrase in FLAGGED_PHRASES:
         if phrase in message['text'].lower():
             kick_user(message['group_id'], message['user_id'], message['token'])
