@@ -1,6 +1,5 @@
 import sys
 sys.path.insert(0, 'vendor')
-
 import os
 import requests
 import random
@@ -9,13 +8,8 @@ import json
 
 API_ROOT = 'https://api.groupme.com/v3/'
 FLAGGED_PHRASES = (
-    'essay written by professionals',
-    'paper writing service',
-    'academic writing service',
-    'student paper assignments',
-    'getting professional academic help from us is easy',
-    'cutt.us',
-    'inyurl.com/muxz7h',
+    'my child has cancer',
+    'removemetest'
 )
 
 
