@@ -8,7 +8,8 @@ import json
 
 API_ROOT = 'https://api.groupme.com/v3/'
 FLAGGED_PHRASES = (
-    'my child has cancer',
+    'selling',
+    'donate',
     'removemetest',
     'insert phrases you want removed here'
 )
@@ -28,8 +29,8 @@ def get_membership_id(group_id, user_id, token):
 
 def remove_member(group_id, membership_id, token):
     response = requests.post(f'{API_ROOT}groups/{group_id}/members/{membership_id}/remove', params={'token': token})
-    print('Tried to kick user, got response:')
-    print(response.text)
+    # print('Tried to kick user, got response:')
+    # print(response.text)
     return response.ok
 
 
@@ -50,9 +51,10 @@ def receive(event, context):
     bot_id = 'YOUR_BOT_ID_HERE'
     for phrase in FLAGGED_PHRASES:
         if phrase in message['text'].lower():
-            kick_user(message['group_id'], message['user_id'], message['token'])
+            # kick_user(message['group_id'], message['user_id'], message['token'])
             delete_message(message['group_id'], message['id'], message['token'])
-            send('Kicked ' + message['name'] + ' due to apparent spam post.', bot_id)
+            send('Deleted message due to flagged phrase')
+            # send('Kicked ' + message['name'] + ' due to apparent spam post.', bot_id)
             break
 
     return {
