@@ -1,19 +1,46 @@
 import sys
 sys.path.insert(0, 'vendor')
+
 import os
 import requests
 import random
-import urllib3
 import json
+import urllib3
+import boto3
+from botocore.exceptions import ClientError
 
-# This should be an AWS Lambda function
+
 API_ROOT = 'https://api.groupme.com/v3/'
+# set flagged phrases in lowercase
 FLAGGED_PHRASES = (
     'selling',
-    'donate',
     'removemetest',
-    'insert phrases you want removed here'
+    'insert your phrases here'
 )
+
+
+def get_secret():
+
+    secret_name = "botcredentials"
+    region_name = "us-east-1"
+
+    # Create a Secrets Manager client
+    session = boto3.session.Session()
+    client = session.client(
+        service_name='secretsmanager',
+        region_name=region_name
+    )
+
+    try:
+        get_secret_value_response = client.get_secret_value(
+            SecretId=secret_name
+        )
+    except ClientError as e:
+        raise e
+
+    # Decrypts secret using the associated KMS key.
+    secret = get_secret_value_response['SecretString']
+    return secret
 
 
 def get_memberships(group_id, token):
@@ -30,8 +57,8 @@ def get_membership_id(group_id, user_id, token):
 
 def remove_member(group_id, membership_id, token):
     response = requests.post(f'{API_ROOT}groups/{group_id}/members/{membership_id}/remove', params={'token': token})
-    # print('Tried to kick user, got response:')
-    # print(response.text)
+    print('Tried to kick user, got response:')
+    print(response.text)
     return response.ok
 
 
@@ -47,10 +74,10 @@ def kick_user(group_id, user_id, token):
 
 def receive(event, context):
     message = json.loads(event['body'])
+    secrets = json.loads(get_secret());
 
-    # In AWS use secrets to set the token and bot ID
-    message['token'] = 'YOUR_TOKEN_HERE'
-    bot_id = 'YOUR_BOT_ID_HERE'
+    message['token'] = secrets.get('token')
+    bot_id = secrets.get('botID')
     for phrase in FLAGGED_PHRASES:
         if phrase in message['text'].lower():
             # kick_user(message['group_id'], message['user_id'], message['token'])
