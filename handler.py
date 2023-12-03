@@ -3,6 +3,7 @@ sys.path.insert(0, 'vendor')
 import os
 import requests
 import random
+import urllib3
 import json
 
 # This should be an AWS Lambda function
