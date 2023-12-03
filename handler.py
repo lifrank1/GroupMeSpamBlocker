@@ -5,7 +5,7 @@ import requests
 import random
 import json
 
-
+# This should be an AWS Lambda function
 API_ROOT = 'https://api.groupme.com/v3/'
 FLAGGED_PHRASES = (
     'selling',
@@ -47,6 +47,7 @@ def kick_user(group_id, user_id, token):
 def receive(event, context):
     message = json.loads(event['body'])
 
+    # In AWS use secrets to set the token and bot ID
     message['token'] = 'YOUR_TOKEN_HERE'
     bot_id = 'YOUR_BOT_ID_HERE'
     for phrase in FLAGGED_PHRASES:
