@@ -10,6 +10,8 @@ import json
 API_ROOT = 'https://api.groupme.com/v3/'
 FLAGGED_PHRASES = (
     'selling',
+    'sex',
+    'nudes',
     'donate',
     'removemetest',
     'insert phrases you want removed here'
