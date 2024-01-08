@@ -11,6 +11,8 @@ API_ROOT = 'https://api.groupme.com/v3/'
 FLAGGED_PHRASES = (
     'selling',
     'sex',
+    'tickets',
+    'ticket',
     'nudes',
     'donate',
     'removemetest',
