@@ -55,13 +55,14 @@ def receive(event, context):
     # In AWS use secrets to set the token and bot ID
     message['token'] = 'YOUR_TOKEN_HERE'
     bot_id = 'YOUR_BOT_ID_HERE'
-    for phrase in FLAGGED_PHRASES:
-        if phrase in message['text'].lower():
-            # kick_user(message['group_id'], message['user_id'], message['token'])
-            delete_message(message['group_id'], message['id'], message['token'])
-            send('Deleted message due to flagged phrase')
-            # send('Kicked ' + message['name'] + ' due to apparent spam post.', bot_id)
-            break
+    
+    # Do not run check if the message is from this bot
+    if not('Antispam' in message['name']):
+        for phrase in FLAGGED_PHRASES:
+            if phrase in message['text'].lower():
+                delete_message(message['group_id'], message['id'], message['token'])
+                send('Deleted message: "' + message['text'] + '"\nUser: "' + message['name'] + '"\nPhrase: "' + phrase + '"', bot_id)
+                break
 
     return {
         'statusCode': 200,
