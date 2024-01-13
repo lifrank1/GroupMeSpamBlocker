@@ -15,6 +15,7 @@ FLAGGED_PHRASES = (
     'ticket',
     'nudes',
     'donate',
+    'cancer',
     'removemetest',
     'insert phrases you want removed here'
 )
