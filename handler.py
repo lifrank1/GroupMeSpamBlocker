@@ -35,8 +35,8 @@ def get_membership_id(group_id, user_id, token):
 
 def remove_member(group_id, membership_id, token):
     response = requests.post(f'{API_ROOT}groups/{group_id}/members/{membership_id}/remove', params={'token': token})
-    # print('Tried to kick user, got response:')
-    # print(response.text)
+    print('Tried to kick user, got response:')
+    print(response.text)
     return response.ok
 
 
@@ -45,6 +45,7 @@ def delete_message(group_id, message_id, token):
     return response.ok
 
 
+#Kicking a user will not allow them to rejoin the groupo unless they join back through the archive
 def kick_user(group_id, user_id, token):
     membership_id = get_membership_id(group_id, user_id, token)
     remove_member(group_id, membership_id, token)
@@ -63,6 +64,7 @@ def receive(event, context):
             if phrase in message['text'].lower():
                 delete_message(message['group_id'], message['id'], message['token'])
                 send('Deleted message: "' + message['text'] + '"\nUser: "' + message['name'] + '"\nPhrase: "' + phrase + '"', bot_id)
+                # kick_user(message['group_id'], message['user_id'], message['token'])
                 break
 
     return {
