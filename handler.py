@@ -33,6 +33,7 @@ def get_membership_id(group_id, user_id, token):
             return membership['id']
 
 
+#Future may combine remove_member and kick_user into one function
 def remove_member(group_id, membership_id, token):
     response = requests.post(f'{API_ROOT}groups/{group_id}/members/{membership_id}/remove', params={'token': token})
     print('Tried to kick user, got response:')
