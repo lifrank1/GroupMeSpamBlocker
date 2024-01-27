@@ -65,7 +65,7 @@ def receive(event, context):
             if phrase in message['text'].lower():
                 delete_message(message['group_id'], message['id'], message['token'])
                 send('Deleted message: "' + message['text'] + '"\nUser: "' + message['name'] + '"\nPhrase: "' + phrase + '"', bot_id)
-                # kick_user(message['group_id'], message['user_id'], message['token'])
+                kick_user(message['group_id'], message['user_id'], message['token'])
                 break
 
     return {
